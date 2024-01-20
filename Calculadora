@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subestimado Molón 2024</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        h2 {
+            color: #008000;
+            text-align: center;
+        }
+        form {
+            width: 70%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select, input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+     <h2>Subestimado Molón 2024</h2> 
+    <form id="formularioCiclista">
+        <label for="nombreCiclista">Nombre del Ciclista:</label>
+        <input type="text" id="nombreCiclista" name="nombreCiclista">
+
+        <label for="paisOrigen">País de Origen:</label>
+        <select id="paisOrigen" name="paisOrigen">
+            <option value="francia_italia_espana_benelux">Francia, Italia, España, Benelux</option>
+            <option value="otros">Otros Países</option>
+        </select>
+
+        <label for="puntosPCS2023">Puntos PCS 2023:</label>
+        <input type="number" id="puntosPCS2023" name="puntosPCS2023">
+
+        <label for="puntosPCS2022">Puntos PCS 2022:</label>
+        <input type="number" id="puntosPCS2022" name="puntosPCS2022">
+
+          <label for="look">Look (selecciona una opción):</label>  
+ <seleccione id= "look" nombre="look"> 
+              <option value="barba_bigote_melena_tenido">Barba, Bigote, Melena y/o Teñido</option>  
+               <option value="calvo_pelo_punta_cabeza_afeitada">Calvo, Pelo Punta o Cabeza Afeitada Parcial</option>   
+               <option value="muy_feo_muy_guapo">Muy Feo o Muy Guapo</option>   
+                <option value="ninguna">Ninguna de las anteriores</option>    
+ </select> 
+
+            <label for="personalidad">Personalidad (selecciona una opción):</label>    
+<seleccione id= "personalidad" nombre="personalidad">
+  <valor de opción="escandalos">Escándalos</opción>  
+         <option value="declaracionesExplosivas">Declaraciones Explosivas</option>     
+         <option value="discusionesEquipo">Discusiones con el director y/o compañeros de equipo</option>     
+         <option value="ninguna">Ninguna de las anteriores</option>     
+</select>
+ <tipo de entrada="enviar" valor="Evaluar Ciclista"> 
+ </forma> 
+
+ <script> 
+       documento.getElementById("formularioCiclista").adEventListener("submit", función (evento){       
+  evento.preventePor defecto();  
+
+                    const nombreCiclista = document.getElementById("nombreCiclista").value;        
+ const paisOrigenSeleccionado = document.getElementById("paisOrigin").valor; 
+ const puntosPCS2023 = parseInt (document.getElementById("puntosPCS2023").valor) |^^ 0; 
+ const puntosPCS2022 = parseInt (document.getElementById("puntosPCS2022").valor) || 0; 
+ const promedioPCS = (puntosPCS2023 + puntosPCS2022) / 2; 
+ const lookSeleccionado = document.getElementById("look").valor; 
+ const personalidadSeleccionada = document.getElementById("personalidad").valor; 
+
+ let lookCoolCumplido = lookSeleccionado !== "ninguna"; 
+                    let paisNoExcluido = paisOrigenSeleccionado !== "francia_italia_espana_benelux";        
+                    let personalidadAdecuada = personalidadSeleccionada !== "ninguna";        
+
+                    let resultado = "Resumen de la Evaluación:\n";        
+                    resultado += "Nombre del Ciclista: " + nombreCiclista + "\n";        
+                    resultado += "País de Origen: " + paisOrigenSeleccionado + "\n";        
+                    resultado += "Puntos PCS 2023: " + puntosPCS2023 + "\n";        
+                    resultado += "Puntos PCS 2022: " + puntosPCS2022 + "\n";        
+                    resultado += "Promedio PCS: " + promedioPCS + "\n";        
+                    resultado += "Look Seleccionado: " + lookSeleccionado + "\n";        
+                    resultado += "Personalidad Seleccionada: " + personalidadSeleccionada + "\n";        
+
+ si (puntosPCS2023 <= 500 & promedioPCS < 300 & lookCoolCumplido & (paisNoExcluido |^ personalidadAdecuada)) { 
+                       resultado += "\n¡El ciclista cumple con los criterios de la Porra Ciclista Subestimado Molón 2024!";       
+      } más {      
+                       resultado += "\nEl ciclista no cumple con los criterios mínimos requeridos.";       
+                }    
+
+      alerta (resultado);      
+            });    
+ </script> 
+</cuerpo>
+</html>
