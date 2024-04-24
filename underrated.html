@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Underrated Riders</title>
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        text-align: center;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: auto;
+        max-width: 800px;
+        margin: auto;
+    }
+    h1 {
+        color: #3498db;
+    }
+    .score, .word, .incorrect, .attempts, .emoji, .message {
+        margin: 20px 0;
+    }
+    .word span, .incorrect span {
+        margin: 0 3px;
+        padding: 5px;
+        border-bottom: 2px solid #3498db;
+        display: inline-block;
+    }
+    .keyboard {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .letter, #resetButton {
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        margin: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 19px;
+    }
+    .letter:hover, #resetButton:hover {
+        background-color: #2874a6;
+    }
+    #resetButton {
+        background-color: #1abc9c;
+        color: white;
+        padding: 8px 16px;
+        font-size: 14px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: none;
+        margin-top: 20px;
+        align-self: center;
+    }
+    .emoji {
+        font-size: 48px;
+        margin: 20px 0;
+    }
+    .message {
+        font-size: 22px;
+    }
+    .letter.used {
+        background-color: #95a5a6;
+        color: #fff;
+        pointer-events: none;
+    }
+    .letter.used.correct {
+        background-color: #2ecc71;
+        color: #fff;
+        pointer-events: none;
+    }
+    .letter.used.incorrect {
+        background-color: #e74c3c;
+        color: #fff;
+        pointer-events: none;
+    }
+    .letter.disabled {
+        background-color: #bdc3c7;
+        color: #666;
+        pointer-events: none;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Underrated Riders &copy;</h1>
+        <div id="score">Score: <span id="scoreCounter">0</span></div>
+        <div id="wordToGuess" class="word"></div>
+        <div id="incorrectLetters" class="incorrect"></div>
+        <div id="remainingAttempts" class="attempts">Remaining Attempts: <span></span></div>
+        <div id="hangmanImage" class="emoji"></div>
+        <div id="finalMessage" class="message"></div>
+        <div id="keyboard" class="keyboard"></div>
+    </div>
+    <script>
+        let originalCountries = ['JANCHRISTEN','THANAKHANCHAIYASOMBAT','XIANJINGLYU','FINNFISHERBLACK','JOHANNESSTAUNEMITTET','PAVELBITTNER','SEANFLYNN','KEVINVERMAERKE','MADISMIHKELS','BENTURNER', 'ANDREWAUGUST', 'LEWISASKEY', 'JEFFERSONALVEIROCEPEDA', 'JEFFERSONALEXANDERCEPEDA', 'LUKASNERURKAR', 'DARRENRAFFERTY', 'ARCHIERYAN', 'GEORGSTEINHAUSER', 'YEVGENIYFEDOROV', 'HAROLDLOPEZ', 'JENSENPLOWRIGHT', 'JURIHOLLMANN', 'VICENTEROJAS', 'JOHANNESKULSET', 'ADNEHOLTEE', 'STIANFREDHEIM', 'JONASABRAHAMSEN', 'YANNISVOISARD', 'MARIUSMAYRHOFER', 'MARCOBRENNER', 'MATYASKOPECKY', 'FABIOCHRISTEN', 'DANIELBABOR', 'IURILEITAO', 'KARELVACEK', 'JAMBALJAMTSSAINBAYAR', 'ERICANTONIOFAGUNDEZ', 'VICTORLANGELLOTTI', 'SERGIOCHUMIL', 'FRANKIEMOLONE', 'MILKIASKUDUS', 'EDUARDOSEPULVEDA', 'SCHRAFEDDOGHMY', 'MARTIMSVRCEK', 'QUINNSIMMONS', 'KRISTSNEILANDS', 'GERMANNICOLASTIVANI', 'GEORGEJACKSON', 'RILEYSHEEHAN', 'AKLILUAREFAYNE', 'PERSTRANDHAGENES', 'ANTONIOMORGADO', 'LAURENTGERVAIS', 'MATTHEWRICCITELLO', 'TORSTEINTRAEEN', 'MAXKANTER', 'ISAACDELTORO', 'WELAYHAGOSBERHE', 'JAMESFOUCHE', 'PAULDOUBLE', 'JOEBLACKMORE'];
+
+document.addEventListener('DOMContentLoaded', () => {
+    startGame();
+});
+
+let countries = [...originalCountries];
+let score = 0;
+        let hangmanEmojis = ['😄', '😊', '😐', '😕', '😧', '😢', '😭'];
+        let attempts;
+        let incorrectLetters;
+        let chosenCountry;
+        let correctGuesses;
+
+        function startGame() {
+            if (countries.length === 0) {
+                displayEndGameMessage(true);
+                return;
+            }
+            chosenCountry = countries[Math.floor(Math.random() * countries.length)].toUpperCase();
+            countries = countries.filter(c => c !== chosenCountry);
+            incorrectLetters = [];
+            correctGuesses = new Set();
+            attempts = hangmanEmojis.length - 1;
+            document.getElementById('scoreCounter').innerText = score;
+            updateGameDOM();
+            enableKeyboard();
+        }
+
+        function updateGameDOM() {
+            document.getElementById('wordToGuess').innerHTML = chosenCountry.split('').map(letter => `<span>${'_ '}</span>`).join('');
+            document.getElementById('incorrectLetters').innerHTML = 'Incorrect Letters: ';
+            document.getElementById('hangmanImage').innerText = hangmanEmojis[0];
+            document.getElementById('remainingAttempts').innerText = `Remaining Attempts: ${attempts}`;
+            document.getElementById('finalMessage').innerHTML = '';
+            generateKeyboard();
+        }
+
+        function generateKeyboard() {
+            const keyboardElement = document.getElementById('keyboard');
+            keyboardElement.innerHTML = '';
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letter => {
+                const letterButton = document.createElement('button');
+                letterButton.innerHTML = letter;
+                letterButton.classList.add('letter');
+                letterButton.setAttribute('data-letter', letter);
+                letterButton.onclick = () => verifyLetter(letter);
+                keyboardElement.appendChild(letterButton);
+            });
+        }
+
+        function verifyLetter(letter) {
+            if (attempts <= 0) return;
+            const letterButton = document.querySelector(`.letter[data-letter='${letter}']`);
+            const letters = document.querySelectorAll('#wordToGuess span');
+            let found = false;
+            chosenCountry.split('').forEach((countryLetter, index) => {
+                if (letter === countryLetter) {
+                    letters[index].innerHTML = letter;
+                    correctGuesses.add(letter);
+                    found = true;
+                    letterButton.classList.add('used', 'correct');
+                }
+            });
+
+            if (!found && !incorrectLetters.includes(letter)) {
+                incorrectLetters.push(letter);
+                document.getElementById('incorrectLetters').innerHTML += ` ${letter}`;
+                attempts--;
+                document.getElementById('hangmanImage').innerText = hangmanEmojis[hangmanEmojis.length - 1 - attempts];
+                document.getElementById('remainingAttempts').innerText = `Remaining Attempts: ${attempts}`;
+                letterButton.classList.add('used', 'incorrect');
+            }
+
+            if (attempts <= 0) {
+                disableKeyboard();
+            }
+            checkGameState();
+        }
+
+        function checkGameState() {
+            const isComplete = [...document.querySelectorAll('#wordToGuess span')].every(span => span.innerHTML.trim() !== '_');
+            if (isComplete || attempts <= 0) {
+                setTimeout(() => {
+                    if (isComplete) {
+                        score++;
+                        if (countries.length > 0) {
+                            startGame();
+                        } else {
+                            displayEndGameMessage(true);
+                        }
+                    } else {
+                        displayEndGameMessage(false);
+                    }
+                }, 2000);
+            }
+        }
+
+        function displayEndGameMessage(win) {
+            const message = win ?
+                "Congratulations! You've guessed all the countries. Final score: " + score + "." :
+                "Game over! The country was: " + (chosenCountry || "unknown") + ". Final score: " + score + ".";
+            document.getElementById('finalMessage').innerHTML = message;
+            document.getElementById('remainingAttempts').innerText = "Remaining Attempts: 0";
+            showResetButton();
+        }
+
+        function showResetButton() {
+            let resetButton = document.getElementById('resetButton');
+            if (!resetButton) {
+                resetButton = document.createElement('button');
+                resetButton.textContent = 'Restart Game';
+                resetButton.id = 'resetButton';
+                resetButton.onclick = resetGame;
+                document.querySelector('.container').appendChild(resetButton);
+            }
+            resetButton.style.display = 'block';
+        }
+
+        function resetGame() {
+            document.getElementById('resetButton').style.display = 'none';
+            countries = [...originalCountries];
+            score = 0;
+            startGame();
+        }
+
+        function disableKeyboard() {
+            document.querySelectorAll('.letter').forEach(button => {
+                button.disabled = true;
+            });
+        }
+
+        function enableKeyboard() {
+            document.querySelectorAll('.letter').forEach(button => {
+                button.disabled = false;
+                button.classList.remove('used', 'correct', 'incorrect');
+            });
+        }
+    </script>
+</body>
+</html>
