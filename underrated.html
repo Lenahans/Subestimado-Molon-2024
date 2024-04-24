@@ -50,6 +50,7 @@
         cursor: pointer;
         transition: background-color 0.3s ease;
         font-size: 19px;
+        width: 14%; /* Aproximadamente 1/7 del espacio disponible, considerando margen */
     }
     .letter:hover, #resetButton:hover {
         background-color: #2874a6;
@@ -93,7 +94,16 @@
         color: #666;
         pointer-events: none;
     }
-</style>
+
+    @media (min-width: 768px) {
+        .letter {
+            width: calc(100% / 7 - 10px); /* Ajuste para 7 teclas por fila con un pequeño espacio para márgenes */
+        }
+        .keyboard {
+            padding: 0 5%; /* Espacio a los lados para centrar las teclas */
+        }
+    }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -106,6 +116,7 @@
         <div id="finalMessage" class="message"></div>
         <div id="keyboard" class="keyboard"></div>
     </div>
+ 
     <script>
         let originalCountries = ['JANCHRISTEN','THANAKHANCHAIYASOMBAT','XIANJINGLYU','FINNFISHERBLACK','JOHANNESSTAUNEMITTET','PAVELBITTNER','SEANFLYNN','KEVINVERMAERKE','MADISMIHKELS','BENTURNER', 'ANDREWAUGUST', 'LEWISASKEY', 'JEFFERSONALVEIROCEPEDA', 'JEFFERSONALEXANDERCEPEDA', 'LUKASNERURKAR', 'DARRENRAFFERTY', 'ARCHIERYAN', 'GEORGSTEINHAUSER', 'YEVGENIYFEDOROV', 'HAROLDLOPEZ', 'JENSENPLOWRIGHT', 'JURIHOLLMANN', 'VICENTEROJAS', 'JOHANNESKULSET', 'ADNEHOLTEE', 'STIANFREDHEIM', 'JONASABRAHAMSEN', 'YANNISVOISARD', 'MARIUSMAYRHOFER', 'MARCOBRENNER', 'MATYASKOPECKY', 'FABIOCHRISTEN', 'DANIELBABOR', 'IURILEITAO', 'KARELVACEK', 'JAMBALJAMTSSAINBAYAR', 'ERICANTONIOFAGUNDEZ', 'VICTORLANGELLOTTI', 'SERGIOCHUMIL', 'FRANKIEMOLONE', 'MILKIASKUDUS', 'EDUARDOSEPULVEDA', 'SCHRAFEDDOGHMY', 'MARTIMSVRCEK', 'QUINNSIMMONS', 'KRISTSNEILANDS', 'GERMANNICOLASTIVANI', 'GEORGEJACKSON', 'RILEYSHEEHAN', 'AKLILUAREFAYNE', 'PERSTRANDHAGENES', 'ANTONIOMORGADO', 'LAURENTGERVAIS', 'MATTHEWRICCITELLO', 'TORSTEINTRAEEN', 'MAXKANTER', 'ISAACDELTORO', 'WELAYHAGOSBERHE', 'JAMESFOUCHE', 'PAULDOUBLE', 'JOEBLACKMORE'];
 
@@ -207,8 +218,8 @@ let score = 0;
 
         function displayEndGameMessage(win) {
             const message = win ?
-                "Congratulations! You've guessed all the countries. Final score: " + score + "." :
-                "Game over! The country was: " + (chosenCountry || "unknown") + ". Final score: " + score + ".";
+                "Congratulations! You've guessed all the riders. Final score: " + score + "." :
+                "Game over! The rider was: " + (chosenCountry || "unknown") + ". Final score: " + score + ".";
             document.getElementById('finalMessage').innerHTML = message;
             document.getElementById('remainingAttempts').innerText = "Remaining Attempts: 0";
             showResetButton();
